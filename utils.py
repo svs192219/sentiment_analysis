@@ -182,43 +182,43 @@ def score_indexed_features(feats, weights):
 ##################
 # Tests
 def test_counter():
-    print "TESTING COUNTER"
+    print("TESTING COUNTER")
     ctr = Counter()
     ctr.increment_count("a", 5)
     ctr.increment_count("b", 3)
-    print str(ctr.counter)
+    print(str(ctr.counter))
     for key in ctr.counter.keys():
-        print key
+        print(key)
     ctr2 = Counter()
     ctr2.increment_count("a", 3)
     ctr2.increment_count("c", 4)
     ctr.add(ctr2)
-    print repr(ctr) + " should be ['a: 8', 'c: 4', 'b: 3']"
+    print(repr(ctr) + " should be ['a: 8', 'c: 4', 'b: 3']")
 
 
 def test_beam():
-    print "TESTING BEAM"
+    print("TESTING BEAM")
     beam = Beam(3)
     beam.add("a", 5)
     beam.add("b", 7)
     beam.add("c", 6)
     beam.add("d", 4)
-    print "Should contain b, c, a: " + repr(beam)
+    print("Should contain b, c, a: " + repr(beam))
     beam.add("e", 8)
     beam.add("f", 6.5)
-    print "Should contain e, b, f: " + repr(beam)
+    print("Should contain e, b, f: " + repr(beam))
     beam.add("f", 9.5)
-    print "Should contain f, e, b: " + repr(beam)
+    print("Should contain f, e, b: " + repr(beam))
 
     beam = Beam(5)
     beam.add("a", 5)
     beam.add("b", 7)
     beam.add("c", 6)
     beam.add("d", 4)
-    print "Should contain b, c, a, d: " + repr(beam)
+    print("Should contain b, c, a, d: " + repr(beam))
     beam.add("e", 8)
     beam.add("f", 6.5)
-    print "Should contain e, b, f, c, a: " + repr(beam)
+    print("Should contain e, b, f, c, a: " + repr(beam))
 
 if __name__ == '__main__':
     test_counter()

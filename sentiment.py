@@ -14,7 +14,7 @@ if __name__ == '__main__':
     train_exs = read_and_index_sentiment_examples("data/train.txt", word_vectors.word_indexer)
     dev_exs = read_and_index_sentiment_examples("data/dev.txt", word_vectors.word_indexer)
     test_exs = read_and_index_sentiment_examples("data/test-blind.txt", word_vectors.word_indexer)
-    print repr(len(train_exs)) + " / " + repr(len(dev_exs)) + " / " + repr(len(test_exs)) + " train/dev/test examples"
+    print(repr(len(train_exs)) + " / " + repr(len(dev_exs)) + " / " + repr(len(test_exs)) + " train/dev/test examples")
 
     if len(sys.argv) >= 2:
         system_to_run = sys.argv[1]

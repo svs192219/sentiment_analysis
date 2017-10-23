@@ -44,7 +44,7 @@ if __name__=="__main__":
     # weight decay schedule
     decay_steps = 10
     learning_rate_decay_factor = 0.99
-    global_step = tf.contrib.framework.get_or_create_global_step()
+    global_step = tf.train.get_or_create_global_step()
     # Smaller learning rates are sometimes necessary for larger networks
     initial_learning_rate = 0.1
     # Decay the learning rate exponentially based on the number of steps.
@@ -85,7 +85,7 @@ if __name__=="__main__":
         for i in range(0, num_epochs):
             loss_this_iter = 0
             # batch_size of 1 here; if we want bigger batches, we need to build our network appropriately
-            for ex_idx in xrange(0, len(train_xs)):
+            for ex_idx in range(0, len(train_xs)):
                 # sess.run generally evaluates variables in the computation graph given inputs. "Evaluating" train_op
                 # causes training to happen
                 [_, loss_this_instance, summary] = sess.run([train_op, loss, merged], feed_dict = {fx: train_xs[ex_idx],
@@ -93,17 +93,17 @@ if __name__=="__main__":
                 train_writer.add_summary(summary, step_idx)
                 step_idx += 1
                 loss_this_iter += loss_this_instance
-            print "Loss for iteration " + repr(i) + ": " + repr(loss_this_iter)
+            print("Loss for iteration " + repr(i) + ": " + repr(loss_this_iter))
         # Evaluate on the train set
         train_correct = 0
-        for ex_idx in xrange(0, len(train_xs)):
+        for ex_idx in range(0, len(train_xs)):
             # Note that we only feed in the x, not the y, since we're not training. We're also extracting different
             # quantities from the running of the computation graph, namely the probabilities, prediction, and z
             [probs_this_instance, pred_this_instance, z_this_instance] = sess.run([probs, one_best, z],
                                                                                   feed_dict={fx: train_xs[ex_idx]})
             if (train_ys[ex_idx] == pred_this_instance):
                 train_correct += 1
-            print "Example " + repr(train_xs[ex_idx]) + "; gold = " + repr(train_ys[ex_idx]) + "; pred = " +\
-                  repr(pred_this_instance) + " with probs " + repr(probs_this_instance)
-            print "  Hidden layer activations for this example: " + repr(z_this_instance)
-        print repr(train_correct) + "/" + repr(len(train_ys)) + " correct after training"
+            print("Example " + repr(train_xs[ex_idx]) + "; gold = " + repr(train_ys[ex_idx]) + "; pred = " +\
+                  repr(pred_this_instance) + " with probs " + repr(probs_this_instance))
+            print("  Hidden layer activations for this example: " + repr(z_this_instance))
+        print(repr(train_correct) + "/" + repr(len(train_ys)) + " correct after training")

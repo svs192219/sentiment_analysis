@@ -105,7 +105,7 @@ def read_word_embeddings(embeddings_file):
             vectors.append(vector)
             #print repr(word) + " : " + repr(vector)
     f.close()
-    print "Read in " + repr(len(word_indexer)) + " vectors of size " + repr(vectors[0].shape[0])
+    print("Read in " + repr(len(word_indexer)) + " vectors of size " + repr(vectors[0].shape[0]))
     # Add an UNK token at the end
     word_indexer.get_index("UNK")
     vectors.append(np.zeros(vectors[0].shape[0]))
@@ -126,12 +126,12 @@ def relativize(file, outfile, indexer, word_counter):
     for line in f:
         word = line[:line.find(' ')]
         if indexer.contains(word):
-            print "Keeping word vector for " + word
+            print("Keeping word vector for " + word)
             voc.append(word)
             o.write(line)
     for word in indexer.objs_to_ints.keys():
         if word not in voc:
-            print "Missing " + word + " with count " + repr(word_counter.get_count(word))
+            print("Missing " + word + " with count " + repr(word_counter.get_count(word)))
     f.close()
     o.close()
 
