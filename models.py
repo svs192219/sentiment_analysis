@@ -167,8 +167,10 @@ def train_fancy(train_exs, dev_exs, test_exs, word_vectors):
     seq = tf.placeholder(tf.int32, [None])
 
     lstm_fw = tf.contrib.rnn.BasicLSTMCell(lstmUnits)
+    lstm_bw = tf.contrib.rnn.BasicLSTMCell(lstmUnits)
     # lstm = tf.contrib.rnn.DropoutWrapper(cell=lstm, output_keep_prob=0.75)
-    rnn_outputs, _ = tf.nn.dynamic_rnn(lstm, embeddings, sequence_length=seq, dtype=tf.float32)
+    # rnn_outputs, _ = tf.nn.dynamic_rnn(lstm, embeddings, sequence_length=seq, dtype=tf.float32)
+    rnn_outputs, _, _ = tf.contrib.rnn.stack_bidirectional_dynamic_rnn([lstm_fw], [lstm_bw], embeddings, sequence_length=seq, dtype=tf.float32)
 
 
     # rnn_outputs = tf.transpose(rnn_outputs, [1, 0, 2])
@@ -190,7 +192,7 @@ def train_fancy(train_exs, dev_exs, test_exs, word_vectors):
 
     # l1 = get_fclayer(input_data, lstmUnits, num_h1, ['w1', 'b1'])
     # l2 = get_fclayer(l1, num_h1, num_h2, ['w2', 'b2'])
-    pred = get_fclayer(input_data, lstmUnits, num_labels, ['w3', 'b3'], final=True)
+    pred = get_fclayer(input_data, lstmUnits*2, num_labels, ['w3', 'b3'], final=True)
 
     loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y_one_hot))
 
@@ -198,7 +200,7 @@ def train_fancy(train_exs, dev_exs, test_exs, word_vectors):
     learning_rate_decay_factor = 0.99
     global_step = tf.train.get_or_create_global_step()
     # Smaller learning rates are sometimes necessary for larger networks
-    initial_learning_rate = 0.005
+    initial_learning_rate = 0.001
     # Decay the learning rate exponentially based on the number of steps.
     lr = tf.train.exponential_decay(initial_learning_rate,
                                     global_step,
